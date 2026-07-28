@@ -20,15 +20,22 @@
   v4 — rodada de feedback Matheus/Sequoia + Aluísio (27/07/2026). Ver backlog completo em
     campanhas/2026-07-captacao-lajes/backlog-alteracoes-lp.md. Resumo do que mudou:
     · Hero: crop ajustado (background-position) pra mostrar mais do prédio; H1/nav mais leves.
-    · LEED: removido o card tabular ("quadro"); dados viraram tira leve (.leed-stats); selo ampliado e centralizado.
-    · Arquitetura: nota histórica genérica sobre os arquitetos originais adicionada (.arch-legacy) —
-      SEM nomes/status específicos, pois não foram confirmados. PENDENTE: nomes reais + autorização
-      do Aluísio/Matheus antes de tornar a menção mais específica.
+    · LEED: removido o card tabular ("quadro") E os dados de breakdown por categoria (pedido explícito do
+      Eduardo em 27/07 — "irrelevantes"). Selo ampliado bem mais (196px→264px) e é agora o elemento
+      dominante da seção, com glow mais forte.
+    · Arquitetura: removida a afirmação "fundado em 1955, mais antigo escritório do Brasil, ~mil edifícios,
+      Centro Empresarial Nações Unidas" — SEM FONTE em nenhum lugar da KB, sinalizada pelo Eduardo como
+      sensacionalista/provavelmente errada. Não reintroduzir sem fonte verificável. A nota histórica sobre
+      os arquitetos individuais também foi removida (dependia da mesma narrativa questionada) — PENDENTE:
+      só reintroduzir com dado real (nomes, status, autorização) confirmado pelo Aluísio/Matheus.
     · Galeria: +2 fotos (auditório, lounge) da captação original + legendas visíveis + swipe mobile no lightbox.
     · Vídeo institucional novo (img/institucional.mp4, comprimido de 135MB/4K-fonte em Downloads para 720p
       ~43MB via avconvert), click-to-play, não carrega até o clique (preload="none").
     · Localização: mapa CSS falso trocado por embed real do Google Maps (sem API key) + lista "No entorno"
       (Fasano Itaim, Ráscal, Gero Panini) — sem inventar distância/tempo, só citação factual do bairro.
+    · Transições entre seções suavizadas: removida a linha reta (border-bottom) entre todas as seções;
+      adicionado fade real (gradiente da cor anterior) nos pontos onde o fundo muda de cor
+      (stats→diferenciais→leed→arquitetura→contato→footer), pedido do Eduardo pra não parecer "amador".
   ============================================================================
 -->
 
@@ -120,10 +127,22 @@
   }
 
   /* section base */
-  .sec{padding:clamp(60px,8vw,110px) 0;border-bottom:1px solid var(--line-soft)}
+  .sec{padding:clamp(60px,8vw,110px) 0;position:relative}
   .sec-head{max-width:66ch}
   .sec-head h2{font-size:clamp(28px,4.4vw,50px);margin-top:14px;color:var(--ink)}
   .sec-head p{margin-top:18px;color:var(--ink-soft);font-size:16px;max-width:58ch}
+
+  /* transições suavizadas entre seções com fundo diferente — sem linha dura, com fade real da cor anterior */
+  .stats,footer{position:relative}
+  .stats::before,#diferenciais::before,#leed::before,#arquitetura::before,.cta-sec::before,footer::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:clamp(70px,10vw,140px);z-index:-1;pointer-events:none
+  }
+  .stats::before{height:clamp(28px,4vw,48px);background:linear-gradient(180deg,var(--petrol-deep) 0%,rgba(27,49,64,0) 100%)}
+  #diferenciais::before{background:linear-gradient(180deg,var(--ink) 0%,rgba(27,31,34,0) 100%)}
+  #leed::before{background:linear-gradient(180deg,var(--paper) 0%,rgba(245,243,239,0) 100%)}
+  #arquitetura::before{background:linear-gradient(180deg,var(--ink) 0%,rgba(27,31,34,0) 100%)}
+  .cta-sec::before{background:linear-gradient(180deg,var(--paper) 0%,rgba(245,243,239,0) 100%)}
+  footer::before{height:clamp(36px,5vw,60px);background:linear-gradient(180deg,var(--petrol) 0%,rgba(27,49,64,0) 100%)}
 
   /* diferenciais grid */
   .dif-grid{margin-top:52px;display:grid;grid-template-columns:1fr;gap:0}
@@ -144,9 +163,6 @@
   .pillar{display:flex;align-items:center;gap:15px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14.5px;color:rgba(255,255,255,.88)}
   .pillar .ic{flex:0 0 auto;width:40px;height:40px;border:1px solid rgba(181,139,59,.42);border-radius:50%;display:grid;place-items:center}
   .pillar svg{width:19px;height:19px;stroke:var(--bronze);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-  .leed-stats{display:flex;flex-wrap:wrap;gap:11px 32px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.14)}
-  .leed-stats .ls{font-size:12.5px;color:rgba(255,255,255,.6)}
-  .leed-stats .ls b{font-family:"Libre Franklin",sans-serif;font-weight:600;color:#fff;font-variant-numeric:tabular-nums}
 
   /* arquitetura */
   .arch-top{margin-top:48px;display:grid;grid-template-columns:1fr;gap:34px;align-items:start}
@@ -156,7 +172,6 @@
   .arch-credit .row .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);font-weight:600}
   .arch-credit .row .v{font-family:"Libre Franklin",sans-serif;font-size:20px;color:var(--ink);text-align:right}
   .arch-copy p{color:var(--ink-soft);font-size:15.5px;margin-bottom:16px}
-  .arch-legacy{font-style:italic;color:var(--stone);font-size:14px;padding-top:14px;border-top:1px solid var(--line-soft)}
 
   /* galeria */
   .gallery-head{margin-top:56px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--line);padding-top:26px}
@@ -203,10 +218,10 @@
   /* selo LEED */
   .leed-head{max-width:none;display:flex;flex-wrap:wrap;gap:32px 44px;justify-content:space-between;align-items:center}
   .leed-head .sh-text{flex:1 1 380px;max-width:58ch}
-  .leed-seal{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:22px;border-radius:50%;background:radial-gradient(circle,rgba(181,139,59,.16) 0%,rgba(181,139,59,0) 72%)}
-  .leed-seal img{width:196px;height:196px;display:block;filter:drop-shadow(0 8px 26px rgba(0,0,0,.45))}
-  .leed-seal .seal-cap{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze);white-space:nowrap}
-  @media(max-width:760px){.leed-head{flex-direction:column-reverse;align-items:center;gap:20px}.leed-seal img{width:150px;height:150px}}
+  .leed-seal{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:18px;padding:34px;border-radius:50%;background:radial-gradient(circle,rgba(181,139,59,.24) 0%,rgba(181,139,59,.04) 62%,rgba(181,139,59,0) 78%)}
+  .leed-seal img{width:264px;height:264px;display:block;filter:drop-shadow(0 12px 34px rgba(0,0,0,.5))}
+  .leed-seal .seal-cap{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--bronze);white-space:nowrap}
+  @media(max-width:760px){.leed-head{flex-direction:column-reverse;align-items:center;gap:20px}.leed-seal{padding:24px}.leed-seal img{width:200px;height:200px}}
 
   /* localização */
   .loc-grid{margin-top:52px;display:grid;grid-template-columns:1fr;gap:34px;align-items:stretch}
@@ -337,15 +352,6 @@
         <div class="pillar"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21v-9"/><path d="M12 12c-3 0-5-2-5-5 3 0 5 2 5 5z"/><path d="M12 13c3 0 5-2 5-5-3 0-5 2-5 5z"/></svg></span>Vegetação e áreas verdes</div>
         <div class="pillar"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9h11a2.5 2.5 0 10-2.5-2.5"/><path d="M3 15h15a2.5 2.5 0 11-2.5 2.5"/><path d="M3 12h7"/></svg></span>Qualidade do ambiente interno</div>
       </div>
-      <!-- dados oficiais: Final Recertification Review Report ago/2025 · proj. 1000131020 — mantidos como referência leve, sem o card tabular anterior (feedback Matheus 27/07) -->
-      <div class="leed-stats">
-        <span class="ls">Energia <b>29/33</b></span>
-        <span class="ls">Água <b>9/15</b></span>
-        <span class="ls">Resíduos <b>7/8</b></span>
-        <span class="ls">Transporte <b>12/14</b></span>
-        <span class="ls">Experiência humana <b>11/20</b></span>
-        <span class="ls">Existing Buildings O&amp;M · recertificado 2025 · verificado <b>USGBC/GBCI</b></span>
-      </div>
     </div>
   </div>
 </section>
@@ -360,11 +366,14 @@
     </div>
     <div class="arch-top">
       <div class="arch-copy reveal">
-        <p>O projeto é assinado pelo <strong>Botti Rubin Arquitetos</strong>: fundado em 1955, é o mais antigo escritório de arquitetura em atividade no Brasil, com cerca de mil edifícios projetados — entre eles o Centro Empresarial Nações Unidas.</p>
-        <p>Da fachada em pele de vidro ao hall em granito de pé-direito duplo, o edifício traduz a linguagem corporativa que consagrou o escritório: solidez e permanência — atributos que sustentam a decisão de empresas que buscam um endereço de longo prazo.</p>
+        <!-- 27/07: removida a afirmação "fundado em 1955, mais antigo escritório do Brasil, ~mil edifícios, Centro Empresarial Nações Unidas" —
+             sem fonte em nenhum lugar da KB do cliente, marcada pelo Eduardo como sensacionalista/provavelmente errada. Não reintroduzir sem
+             fonte verificável. Mantido só o que é confirmado (nome do escritório, já registrado em arch-credit abaixo). -->
+        <p>O projeto é assinado pelo <strong>Botti Rubin Arquitetos</strong>.</p>
+        <p>Da fachada em pele de vidro ao hall em granito de pé-direito duplo, o edifício reflete uma linguagem corporativa sólida e duradoura — atributos que sustentam a decisão de empresas que buscam um endereço de longo prazo.</p>
         <p>A engenharia predial — elevadores inteligentes, climatização individualizada, gerador e controle de acesso 24h — garante previsibilidade operacional para a rotina das equipes.</p>
-        <!-- PENDENTE (feedback Aluísio, 27/07): resgatar os arquitetos individuais responsáveis pelo projeto original como nota histórica, sem nomear com destaque. Nomes exatos e autorização de citação ainda precisam ser confirmados com Aluísio/Matheus — ver backlog-alteracoes-lp.md §5. O parágrafo abaixo é uma versão segura, sem nomes, para não publicar dado não confirmado. -->
-        <p class="arch-legacy">A concepção original do projeto carrega também uma assinatura pessoal: parte da geração de arquitetos que, ao longo de décadas, ajudou a construir a linguagem corporativa do Botti Rubin Arquitetos — um registro histórico que o Sueste Plaza preserva com respeito até hoje.</p>
+        <!-- PENDENTE (feedback Aluísio, 27/07): nota histórica sobre os arquitetos individuais removida por ora — dependia da mesma narrativa
+             de "escritório consagrado" que foi questionada. Reintroduzir só com dado real confirmado (nomes, status, autorização) — ver backlog §5. -->
       </div>
       <div class="arch-credit reveal">
         <div class="row"><span class="k">Projeto arquitetônico</span><span class="v">Botti Rubin Arquitetos</span></div>
