@@ -1,0 +1,6 @@
+# Versao empacotada (base64) — e so para enviar por e-mail/Slack, nao vai pro ar
+Sueste-Plaza-LP.html
+
+# Arquivos de trabalho / SO
+.DS_Store
+*.md
